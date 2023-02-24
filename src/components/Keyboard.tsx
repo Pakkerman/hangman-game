@@ -30,12 +30,19 @@ const KEYS = [
   'z',
 ]
 
+type KeyboardPropes = {
+  answer: string
+  guessedLetters: string[]
+  setGuessedLetters: (letter: string) => string[]
+  onGameRestart: () => void
+}
+
 function Keyboard({
   answer,
   guessedLetters,
   setGuessedLetters,
   onGameRestart,
-}) {
+}: KeyboardPropes) {
   useEffect(() => {
     document.addEventListener('keypress', (event) => handleKeypress(event))
     document
@@ -49,7 +56,7 @@ function Keyboard({
     }
   }, [])
 
-  function handleClick(event) {
+  function handleClick(event: MouseEvent) {
     const key = event.target.value
     if (!key) return
     if (guessedLetters.includes(key)) return
@@ -76,7 +83,7 @@ function Keyboard({
   return (
     <div
       id="keyboard"
-      className="grid gap-2 place-content-center"
+      className="grid place-content-center gap-2"
       style={{
         gridTemplateColumns: 'repeat(auto-fit, minmax(20px, 30px)) ',
       }}
@@ -90,16 +97,14 @@ function Keyboard({
         buttonStyle = `${modifier} `
         const classname = `btn ${buttonStyle} btn-sm btn-square font-mono lowercase h-8 w-8 text-lg`
         return (
-          <>
-            <button key={index} className={classname} value={key}>
-              {key}
-            </button>
-          </>
+          <button key={index} className={classname} value={key}>
+            {key}
+          </button>
         )
       })}
       <button
         onClick={onGameRestart}
-        className="w-8 h-8 font-mono text-lg btn btn-sm btn-outline "
+        className="btn-outline btn-sm btn h-8 w-8 font-mono text-lg "
       >
         <AiOutlineEnter className="scale-[3]" />
       </button>

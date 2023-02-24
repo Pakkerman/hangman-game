@@ -1,35 +1,42 @@
-import GameContext from '../context/GameContext'
+import getColor from '../utilis/getColor'
 
 interface HangmanGuessProps {
   answer: string
+  guessedLetters: string[]
+  numberOfWrongGuesses: number
+  isWin: boolean
 }
 
-function HangmanGuess({ answer }: { answer: string }) {
-  console.log(answer)
-
+function HangmanGuess({
+  answer,
+  guessedLetters,
+  numberOfWrongGuesses,
+  isWin,
+}: HangmanGuessProps) {
+  let color = isWin ? 'blue' : numberOfWrongGuesses > 6 ? 'red' : 'slate'
   return (
     <div className="w-full pt-2 pb-6 text-center text-4xl">
-      {/* {answer.split('').map((letter, index) => {
-        let modifier = 'gray'
-        if (isGameover) {
-          if (isFail) modifier = 'red'
-          if (isWin) modifier = 'blue'
-        }
+      {answer.split('').map((letter, index) => {
         return (
           <span
             key={index}
-            className={`border-b-4 pb-0.5 mx-1 border-${modifier}-400 text-${modifier}-400`}
+            className={`mx-1 border-b-4 ${getColor(
+              color,
+              'border'
+            )} pb-0.5 ${getColor(color, 'text')}`}
           >
             <span className="">
-              {isGameover
+              {isWin
                 ? letter
                 : guessedLetters.includes(letter)
+                ? letter
+                : numberOfWrongGuesses > 6
                 ? letter
                 : '-'}
             </span>
           </span>
         )
-      })} */}
+      })}
     </div>
   )
 }

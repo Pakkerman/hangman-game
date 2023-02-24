@@ -1,77 +1,47 @@
-import { useState } from 'react'
+import getColor from '../utilis/getColor.js'
+import Body from './Body'
 
-// // const BODY = [head, body, lefthand, righthand, leftleg, rightleg]
-const BODY = ['head', 'body', 'lefthand', 'righthand', 'leftleg', 'rightleg']
+const BODYPART: string[] = [
+  'head',
+  'body',
+  'lefthand',
+  'righthand',
+  'leftleg',
+  'rightleg',
+]
+
+type HangmanDrawingProps = {
+  answer: string
+  guessedLetters: string[]
+  numberOfWrongGuesses: number
+  isWin: boolean
+}
 
 function HangmanDrawing({
   answer,
   guessedLetters,
-}: {
-  answer: string
-  guessedLetters: string[]
-}) {
-  // const [color, setColor] = useState("slate");
-
-  const numberOfWrongGuesses: number = guessedLetters.filter(
-    (item) => !answer.includes(item)
-  ).length
-
-  const isWin = true
-
-  let color = 'slate'
-  if (numberOfWrongGuesses > 6 && isWin) color = 'blue'
-
-  const shownBodyParts: string[] = BODY.slice(0, numberOfWrongGuesses)
-
-  // function setDrawingColor() {
-  //   if (!isGameover) return setColor('slate')
-  //   if (isWin) setColor('blue')
-  //   if (isFail) setColor('red')
-  // }
+  numberOfWrongGuesses,
+  isWin,
+}: HangmanDrawingProps) {
+  let color = isWin ? 'blue' : numberOfWrongGuesses < 6 ? 'slate' : 'red'
 
   return (
     <div className="relative mx-auto mt-2 h-96 py-4">
-      <div className={`h-1 w-60 rounded-md bg-${color}-400`} />
-      <div id="thread" className={`mx-auto h-6 w-1 bg-${color}-400`} />
-      {shownBodyParts.includes('body') && (
-        <div
-          id="head"
-          className={`mx-auto h-16 w-16 rounded-full border-4 border-${color}-400 `}
-        ></div>
-      )}
-
+      <div className={`h-1 w-60 rounded-md ${getColor(color, 'bg')}`} />
       <div
-        id="body"
-        className={`${
-          shownBodyParts.includes('body') ? '' : 'hidden'
-        } mx-auto h-36 w-1 rounded-md bg-${color}-400`}
-      ></div>
+        className={`${isWin && 'opacity-0'} mx-auto h-6 w-1 ${getColor(
+          color,
+          'bg'
+        )}`}
+      />
+      {BODYPART.slice(0, isWin ? 6 : numberOfWrongGuesses).map((bodypart) => (
+        <Body key={bodypart} bodypart={bodypart} color={color} />
+      ))}
       <div
-        id="lefthand"
-        className={`${
-          shownBodyParts.includes('lefthand') ? '' : 'hidden'
-        } absolute mx-auto h-24 w-1 origin-top rounded-md bg-${color}-400 left-[118px] top-32 rotate-45`}
-      ></div>
-      <div
-        id="righthand"
-        className={`${
-          shownBodyParts.includes('righthand') ? '' : 'hidden'
-        } absolute mx-auto h-24 w-1 origin-top -rotate-45 rounded-md bg-${color}-400 right-[118px] top-32`}
-      ></div>
-      <div
-        id="leftleg"
-        className={`${
-          shownBodyParts.includes('leftleg') ? '' : 'hidden'
-        } absolute mx-auto h-24 w-1 rotate-45 rounded-md bg-${color}-400 left-[85px] top-[235px]`}
-      ></div>
-      <div
-        id="rightleg"
-        className={`${
-          shownBodyParts.includes('rightleg') ? '' : 'hidden'
-        } absolute mx-auto h-24 w-1 -rotate-45 rounded-md bg-${color}-400 right-[85px] top-[235px]`}
-      ></div>
-      <div
-        className={`absolute bottom-0 mt-28 h-1 w-60 rounded-md bg-${color}-400`}
+        className={`absolute bottom-0 mt-28 h-1 w-60 rounded-md ${getColor(
+          color,
+          'bg'
+        )}`}
       ></div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { ReactElement, useContext, useEffect, useMemo, useState } from 'react'
 import HangmanDrawing from './components/HangmanDrawing'
 import HangmanGuess from './components/HangmanGuess'
 import Keyboard from './components/Keyboard'
@@ -7,25 +7,44 @@ import wordList from './data/wordList.json'
 const initAnswer = getWord()
 
 function App() {
-  const [answer, setAnswer] = useState(getWord())
-  const [guessedLetters, setGuessedLetters] = useState([])
+  const [answer, setAnswer] = useState<string>(() => {
+    return getWord()
+  })
+  const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
+  const numberOfWrongGuesses: number = guessedLetters.filter(
+    (item) => !answer.includes(item)
+  ).length
+
+  const isWin = answer.split('').every((item) => guessedLetters.includes(item))
+
+  console.log(answer)
   function gameRestart() {
-    setAnswer(getWord())
+    setAnswer(getWord)
     setGuessedLetters([])
   }
 
   return (
     <>
-      <div className="flex flex-col justify-center h-screen ">
+      <div className="flex h-screen flex-col justify-center ">
         <div
           // data-theme="luxury"
-          className="flex flex-col justify-center p-4 mx-auto font-mono bg-gray-800 rounded-lg shadow-xl w-96"
+          className="mx-auto flex w-96 flex-col justify-center rounded-lg bg-gray-800 p-4 font-mono shadow-xl"
         >
           <h1 className="text-2xl">Hangman</h1>
           <h1 className="text-1xl">Dont leave the man hanging</h1>
-          <HangmanDrawing answer={answer} guessedLetters={guessedLetters} />
-          <HangmanGuess answer={answer} />
+          <HangmanDrawing
+            answer={answer}
+            guessedLetters={guessedLetters}
+            numberOfWrongGuesses={numberOfWrongGuesses}
+            isWin={isWin}
+          />
+          <HangmanGuess
+            answer={answer}
+            guessedLetters={guessedLetters}
+            numberOfWrongGuesses={numberOfWrongGuesses}
+            isWin={isWin}
+          />
           <Keyboard
             answer={answer}
             guessedLetters={guessedLetters}
