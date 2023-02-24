@@ -47,7 +47,7 @@ function Keyboard({
     document.addEventListener('keypress', (event) => handleKeypress(event))
     document
       .querySelector('#keyboard')
-      .addEventListener('click', (event) => handleClick(event))
+      ?.addEventListener('click', (event) => handleClick(event))
     return () => {
       document.removeEventListener('keypress', handleKeypress)
       document
@@ -56,8 +56,8 @@ function Keyboard({
     }
   }, [])
 
-  function handleClick(event: MouseEvent) {
-    const key = event.target.value
+  function handleClick(event: Event) {
+    const key: string = event.target.value
     if (!key) return
     if (guessedLetters.includes(key)) return
 
@@ -66,8 +66,8 @@ function Keyboard({
     }
   }
 
-  function handleKeypress(event: KeyboardEvent) {
-    const key = event.key
+  function handleKeypress(event: Event) {
+    const key: string = event.key
     if (guessedLetters.includes(key)) return
 
     if (key.match('Enter')) {
