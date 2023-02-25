@@ -44,7 +44,7 @@ function Keyboard({
   onGameRestart,
 }: KeyboardPropes) {
   useEffect(() => {
-    document.addEventListener('keydown', (event) => handleKeypress(event))
+    document.addEventListener('keydown', handleKeypress)
     return () => {
       document.removeEventListener('keypress', handleKeypress)
     }
@@ -61,7 +61,7 @@ function Keyboard({
     }
   }
 
-  function handleKeypress(event: React.KeyboardEvent) {
+  function handleKeypress(event: KeyboardEvent) {
     const key: string = event.key
     if (guessedLetters.includes(key)) return
 

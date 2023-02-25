@@ -11,18 +11,11 @@ const BODYPART: string[] = [
 ]
 
 type HangmanDrawingProps = {
-  answer: string
-  guessedLetters: string[]
   numberOfWrongGuesses: number
   isWin: boolean
 }
 
-function HangmanDrawing({
-  answer,
-  guessedLetters,
-  numberOfWrongGuesses,
-  isWin,
-}: HangmanDrawingProps) {
+function HangmanDrawing({ numberOfWrongGuesses, isWin }: HangmanDrawingProps) {
   let color = isWin ? 'blue' : numberOfWrongGuesses < 6 ? 'slate' : 'red'
 
   return (

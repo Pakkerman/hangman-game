@@ -37,8 +37,6 @@ function App() {
           <h1 className="text-2xl">Hangman</h1>
           <h1 className="text-1xl">Dont leave the man hanging</h1>
           <HangmanDrawing
-            answer={answer}
-            guessedLetters={guessedLetters}
             numberOfWrongGuesses={numberOfWrongGuesses}
             isWin={isWin}
           />
