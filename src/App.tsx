@@ -1,15 +1,13 @@
-import { ReactElement, useContext, useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import HangmanDrawing from './components/HangmanDrawing'
 import HangmanGuess from './components/HangmanGuess'
 import Keyboard from './components/Keyboard'
 import wordList from './data/wordList.json'
 
-const initAnswer = getWord()
+const initialAnswer: string = getWord()
 
 function App() {
-  const [answer, setAnswer] = useState<string>(() => {
-    return getWord()
-  })
+  const [answer, setAnswer] = useState<string>(initialAnswer)
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
   const numberOfWrongGuesses: number = guessedLetters.filter(
@@ -18,15 +16,20 @@ function App() {
 
   const isWin = answer.split('').every((item) => guessedLetters.includes(item))
 
-  console.log(answer)
   function gameRestart() {
     setAnswer(getWord)
     setGuessedLetters([])
   }
 
+  function handleUpdateGuessedLetters(letter: string): void {
+    setGuessedLetters((prev) =>
+      prev.includes(letter) ? prev : [...prev, letter]
+    )
+  }
+
   return (
     <>
-      <div className="flex h-screen flex-col justify-center ">
+      <div className="flex h-screen flex-col justify-center">
         <div
           // data-theme="luxury"
           className="mx-auto flex w-96 flex-col justify-center rounded-lg bg-gray-800 p-4 font-mono shadow-xl"
@@ -48,7 +51,7 @@ function App() {
           <Keyboard
             answer={answer}
             guessedLetters={guessedLetters}
-            setGuessedLetters={setGuessedLetters}
+            handleUpdateGuessedLetters={handleUpdateGuessedLetters}
             onGameRestart={gameRestart}
           />
         </div>

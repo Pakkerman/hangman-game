@@ -33,40 +33,35 @@ const KEYS = [
 type KeyboardPropes = {
   answer: string
   guessedLetters: string[]
-  setGuessedLetters: (letter: string) => string[]
+  handleUpdateGuessedLetters: (letter: string) => void
   onGameRestart: () => void
 }
 
 function Keyboard({
   answer,
   guessedLetters,
-  setGuessedLetters,
+  handleUpdateGuessedLetters,
   onGameRestart,
 }: KeyboardPropes) {
   useEffect(() => {
-    document.addEventListener('keypress', (event) => handleKeypress(event))
-    document
-      .querySelector('#keyboard')
-      ?.addEventListener('click', (event) => handleClick(event))
+    document.addEventListener('keydown', (event) => handleKeypress(event))
     return () => {
       document.removeEventListener('keypress', handleKeypress)
-      document
-        .querySelector('#keyboard')
-        ?.removeEventListener('click', handleClick)
     }
   }, [])
 
-  function handleClick(event: Event) {
-    const key: string = event.target.value
+  function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    const key = event.currentTarget.value
     if (!key) return
     if (guessedLetters.includes(key)) return
 
+    // TODO: Trying to fix this error of typescript stuff
     if (key.match(/^[a-z]$/)) {
-      setGuessedLetters((prev) => (prev.includes(key) ? prev : [...prev, key]))
+      handleUpdateGuessedLetters(key)
     }
   }
 
-  function handleKeypress(event: Event) {
+  function handleKeypress(event: React.KeyboardEvent) {
     const key: string = event.key
     if (guessedLetters.includes(key)) return
 
@@ -74,7 +69,7 @@ function Keyboard({
       onGameRestart()
     }
     if (key.match(/^[a-z]$/)) {
-      setGuessedLetters((prev) => (prev.includes(key) ? prev : [...prev, key]))
+      handleUpdateGuessedLetters(key)
     }
   }
 
@@ -97,7 +92,12 @@ function Keyboard({
         buttonStyle = `${modifier} `
         const classname = `btn ${buttonStyle} btn-sm btn-square font-mono lowercase h-8 w-8 text-lg`
         return (
-          <button key={index} className={classname} value={key}>
+          <button
+            key={index}
+            className={classname}
+            value={key}
+            onClick={(event) => handleClick(event)}
+          >
             {key}
           </button>
         )
