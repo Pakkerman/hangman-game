@@ -35,6 +35,7 @@ type KeyboardPropes = {
   guessedLetters: string[]
   handleUpdateGuessedLetters: (letter: string) => void
   onGameRestart: () => void
+  isGameover: boolean
 }
 
 function Keyboard({
@@ -42,38 +43,30 @@ function Keyboard({
   guessedLetters,
   handleUpdateGuessedLetters,
   onGameRestart,
+  isGameover,
 }: KeyboardPropes) {
   useEffect(() => {
     document.addEventListener('keydown', handleKeypress)
     return () => {
-      document.removeEventListener('keypress', handleKeypress)
+      document.removeEventListener('keydown', handleKeypress)
     }
-  }, [])
+  }, [isGameover])
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const key = event.currentTarget.value
     if (!key) return
     if (guessedLetters.includes(key)) return
-
-    // TODO: Trying to fix this error of typescript stuff
-    if (key.match(/^[a-z]$/)) {
-      handleUpdateGuessedLetters(key)
-    }
+    if (isGameover) return
+    if (key.match(/^[a-z]$/)) handleUpdateGuessedLetters(key)
   }
 
   function handleKeypress(event: KeyboardEvent) {
     const key: string = event.key
     if (guessedLetters.includes(key)) return
-
-    if (key.match('Enter')) {
-      onGameRestart()
-    }
-    if (key.match(/^[a-z]$/)) {
-      handleUpdateGuessedLetters(key)
-    }
+    if (key.match('Enter')) onGameRestart()
+    if (isGameover) return
+    if (key.match(/^[a-z]$/)) handleUpdateGuessedLetters(key)
   }
-
-  const isGameover = false
 
   return (
     <div

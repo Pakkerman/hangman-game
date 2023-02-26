@@ -3,19 +3,19 @@ import getColor from '../utilis/getColor'
 interface HangmanGuessProps {
   answer: string
   guessedLetters: string[]
-  numberOfWrongGuesses: number
   isWin: boolean
+  isGameover: boolean
 }
 
 function HangmanGuess({
   answer,
   guessedLetters,
-  numberOfWrongGuesses,
+  isGameover,
   isWin,
 }: HangmanGuessProps) {
-  let color = isWin ? 'blue' : numberOfWrongGuesses > 6 ? 'red' : 'slate'
+  let color = isWin ? 'blue' : isGameover ? 'red' : 'slate'
   return (
-    <div className="w-full pt-2 pb-6 text-center text-4xl">
+    <div className="flex w-full justify-center pt-2 pb-6 text-4xl">
       {answer.split('').map((letter, index) => {
         return (
           <span
@@ -26,11 +26,9 @@ function HangmanGuess({
             )} pb-0.5 ${getColor(color, 'text')}`}
           >
             <span className="">
-              {isWin
+              {isWin || isGameover
                 ? letter
                 : guessedLetters.includes(letter)
-                ? letter
-                : numberOfWrongGuesses > 6
                 ? letter
                 : '-'}
             </span>

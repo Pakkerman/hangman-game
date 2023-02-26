@@ -7,14 +7,21 @@ import wordList from './data/wordList.json'
 const initialAnswer: string = getWord()
 
 function App() {
-  const [answer, setAnswer] = useState<string>(initialAnswer)
+  const [answer, setAnswer] = useState<string>('testing')
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
   const numberOfWrongGuesses: number = guessedLetters.filter(
     (item) => !answer.includes(item)
   ).length
 
-  const isWin = answer.split('').every((item) => guessedLetters.includes(item))
+  // TODO: A game state object to manage the states of win condition and whether the game is running
+  //      for changing the color and stuff
+
+  const isWin =
+    numberOfWrongGuesses <= 6 &&
+    answer.split('').every((letter) => guessedLetters.includes(letter))
+
+  const isGameover = isWin || numberOfWrongGuesses >= 6
 
   function gameRestart() {
     setAnswer(getWord)
@@ -29,10 +36,10 @@ function App() {
 
   return (
     <>
-      <div className="flex h-screen flex-col justify-center">
+      <div className=" flex h-screen flex-col justify-center">
         <div
           // data-theme="luxury"
-          className="mx-auto flex w-96 flex-col justify-center rounded-lg bg-gray-800 p-4 font-mono shadow-xl"
+          className="mx-auto flex w-80 flex-col justify-center rounded-lg bg-gray-800 p-4 font-mono shadow-xl md:w-96"
         >
           <h1 className="text-2xl">Hangman</h1>
           <h1 className="text-1xl">Dont leave the man hanging</h1>
@@ -43,7 +50,7 @@ function App() {
           <HangmanGuess
             answer={answer}
             guessedLetters={guessedLetters}
-            numberOfWrongGuesses={numberOfWrongGuesses}
+            isGameover={isGameover}
             isWin={isWin}
           />
           <Keyboard
@@ -51,6 +58,7 @@ function App() {
             guessedLetters={guessedLetters}
             handleUpdateGuessedLetters={handleUpdateGuessedLetters}
             onGameRestart={gameRestart}
+            isGameover={isGameover}
           />
         </div>
       </div>
