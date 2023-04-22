@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import getColor from '../utilis/getColor.js'
 import Body from './Body'
 
@@ -15,12 +16,18 @@ type HangmanDrawingProps = {
   isWin: boolean
 }
 
-function HangmanDrawing({ numberOfWrongGuesses, isWin }: HangmanDrawingProps) {
+export default function HangmanDrawing({
+  numberOfWrongGuesses,
+  isWin,
+}: HangmanDrawingProps) {
   let color = isWin ? 'blue' : numberOfWrongGuesses < 6 ? 'slate' : 'red'
 
   return (
     <div className="relative mx-auto mt-2 h-96 py-4">
-      <div className={`h-1 w-60 rounded-md ${getColor(color, 'bg')}`} />
+      <div
+        id="top"
+        className={`h-1 w-60 rounded-md ${getColor(color, 'bg')}`}
+      />
       <div
         className={`${isWin && 'opacity-0'} mx-auto h-6 w-1 ${getColor(
           color,
@@ -31,6 +38,7 @@ function HangmanDrawing({ numberOfWrongGuesses, isWin }: HangmanDrawingProps) {
         <Body key={bodypart} bodypart={bodypart} color={color} />
       ))}
       <div
+        id="bottom"
         className={`absolute bottom-0 mt-28 h-1 w-60 rounded-md ${getColor(
           color,
           'bg'
@@ -39,5 +47,3 @@ function HangmanDrawing({ numberOfWrongGuesses, isWin }: HangmanDrawingProps) {
     </div>
   )
 }
-
-export default HangmanDrawing

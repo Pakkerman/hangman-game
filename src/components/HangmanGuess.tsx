@@ -7,7 +7,7 @@ interface HangmanGuessProps {
   isGameover: boolean
 }
 
-function HangmanGuess({
+export default function HangmanGuess({
   answer,
   guessedLetters,
   isGameover,
@@ -15,7 +15,7 @@ function HangmanGuess({
 }: HangmanGuessProps) {
   let color = isWin ? 'blue' : isGameover ? 'red' : 'slate'
   return (
-    <div className="flex w-full justify-center pt-2 pb-6 text-4xl">
+    <div className={`flex w-full justify-center pt-2 pb-6 text-4xl`}>
       {answer.split('').map((letter, index) => {
         return (
           <span
@@ -38,5 +38,3 @@ function HangmanGuess({
     </div>
   )
 }
-
-export default HangmanGuess

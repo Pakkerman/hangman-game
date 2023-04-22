@@ -1,33 +1,35 @@
 import { useEffect } from 'react'
-import { AiOutlineEnter } from 'react-icons/ai'
+import { RxReset } from 'react-icons/rx'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const KEYS = [
-  'a',
-  'b',
-  'c',
-  'd',
+  'q',
+  'w',
   'e',
+  'r',
+  't',
+  'y',
+  'u',
+  'i',
+  'o',
+  'p',
+  'a',
+  's',
+  'd',
   'f',
   'g',
   'h',
-  'i',
   'j',
   'k',
   'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
+  '',
   'z',
+  'x',
+  'c',
+  'v',
+  'b',
+  'n',
+  'm',
 ]
 
 type KeyboardPropes = {
@@ -38,13 +40,15 @@ type KeyboardPropes = {
   isGameover: boolean
 }
 
-function Keyboard({
+export default function Keyboard({
   answer,
   guessedLetters,
   handleUpdateGuessedLetters,
   onGameRestart,
   isGameover,
 }: KeyboardPropes) {
+  const [animationParent] = useAutoAnimate()
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeypress)
     return () => {
@@ -70,20 +74,21 @@ function Keyboard({
 
   return (
     <div
+      ref={animationParent}
       id="keyboard"
-      className="grid place-content-center gap-2"
-      style={{
-        gridTemplateColumns: 'repeat(auto-fit, minmax(20px, 30px)) ',
-      }}
+      className="grid w-[350px] grid-cols-10 place-content-center gap-2"
     >
       {KEYS.map((key, index) => {
+        // Use empty key to offset grid cols
+        if (key === '') return <div key={index}></div>
+
         let buttonStyle = ''
         let modifier = isGameover ? 'btn-disabled' : 'btn-outline'
         if (guessedLetters.includes(key)) {
           modifier = answer.includes(key) ? 'btn-info' : 'btn-error'
         }
         buttonStyle = `${modifier} `
-        const classname = `btn ${buttonStyle} btn-sm btn-square font-mono lowercase h-8 w-8 text-lg`
+        const classname = `btn ${buttonStyle} btn-sm btn-square font-mono lowercase h-8 w-8 text-lg focus:outline-none`
         return (
           <button
             key={index}
@@ -97,12 +102,10 @@ function Keyboard({
       })}
       <button
         onClick={onGameRestart}
-        className="btn-outline btn-sm btn h-8 w-8 font-mono text-lg "
+        className="btn-outline btn-sm btn col-span-2 h-8 w-16 font-mono text-lg"
       >
-        <AiOutlineEnter className="scale-[3]" />
+        <RxReset className="scale-[1.25]" />
       </button>
     </div>
   )
 }
-
-export default Keyboard

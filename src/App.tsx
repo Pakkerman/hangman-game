@@ -7,15 +7,12 @@ import wordList from './data/wordList.json'
 const initialAnswer: string = getWord()
 
 function App() {
-  const [answer, setAnswer] = useState<string>('testing')
+  const [answer, setAnswer] = useState<string>(initialAnswer)
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
   const numberOfWrongGuesses: number = guessedLetters.filter(
     (item) => !answer.includes(item)
   ).length
-
-  // TODO: A game state object to manage the states of win condition and whether the game is running
-  //      for changing the color and stuff
 
   const isWin =
     numberOfWrongGuesses <= 6 &&
@@ -36,10 +33,10 @@ function App() {
 
   return (
     <>
-      <div className=" flex h-screen flex-col justify-center">
+      <div className=" flex h-[100svh] flex-col justify-center ">
         <div
           // data-theme="luxury"
-          className="mx-auto flex w-80 flex-col justify-center rounded-lg bg-gray-800 p-4 font-mono shadow-xl md:w-96"
+          className="mx-auto flex h-[100svh] w-full flex-col items-center justify-center rounded-lg bg-gray-800 p-4 font-mono shadow-xl sm:h-[90svh] sm:w-96"
         >
           <h1 className="text-2xl">Hangman</h1>
           <h1 className="text-1xl">Dont leave the man hanging</h1>
