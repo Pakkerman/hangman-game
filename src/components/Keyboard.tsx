@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { RxReset } from 'react-icons/rx'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const KEYS = [
   'q',
@@ -47,8 +46,6 @@ export default function Keyboard({
   onGameRestart,
   isGameover,
 }: KeyboardPropes) {
-  const [animationParent] = useAutoAnimate()
-
   useEffect(() => {
     document.addEventListener('keydown', handleKeypress)
     return () => {
@@ -74,12 +71,12 @@ export default function Keyboard({
 
   return (
     <div
-      ref={animationParent}
+      // ref={animationParent}
       id="keyboard"
       className="grid w-[350px] grid-cols-10 place-content-center gap-2"
     >
       {KEYS.map((key, index) => {
-        // Use empty key to offset grid cols
+        // Use empty key to offset grid col
         if (key === '') return <div key={index}></div>
 
         let buttonStyle = ''
@@ -102,7 +99,7 @@ export default function Keyboard({
       })}
       <button
         onClick={onGameRestart}
-        className="btn-outline btn-sm btn col-span-2 h-8 w-16 font-mono text-lg"
+        className=" btn-outline btn-sm btn h-8 w-16 font-mono text-lg "
       >
         <RxReset className="scale-[1.25]" />
       </button>
